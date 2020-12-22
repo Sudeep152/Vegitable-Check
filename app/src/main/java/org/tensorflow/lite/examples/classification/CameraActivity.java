@@ -106,7 +106,7 @@ public abstract class CameraActivity extends AppCompatActivity
   private Model model = Model.FLOAT;
   private Device device = Device.CPU;
   private int numThreads = -1;
-   MediaPlayer mp,mp1,mp2;
+   MediaPlayer mp,mp1;
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     LOGGER.d("onCreate " + this);
@@ -343,9 +343,8 @@ public abstract class CameraActivity extends AppCompatActivity
     handlerThread.start();
     handler = new Handler(handlerThread.getLooper());
 
-    mp = MediaPlayer.create(this, R.raw.hun);
-    mp1 = MediaPlayer.create(this, R.raw.ten);
-    mp2 = MediaPlayer.create(this, R.raw.five);
+
+
 
  /*   mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
       @Override
@@ -550,40 +549,42 @@ public abstract class CameraActivity extends AppCompatActivity
         return 0;
     }
   }
-boolean hun = false;
-  boolean five = false;
-  boolean ten = false;
+boolean tamater = false;
+  boolean mirchi = false;
+
   @UiThread
   protected void showResultsInBottomSheet(List<Recognition> results) {
 
-    if (results != null && results.size() >= 3) {
+    mp = MediaPlayer.create(this, R.raw.tamatar);
+    mp1 = MediaPlayer.create(this, R.raw.mirchi);
+
+    if (results != null && results.size() >= 2) {
       Recognition recognition = results.get(0);
       if (recognition != null) {
         if (recognition.getTitle() != null) recognitionTextView.setText(recognition.getTitle());
         if (recognition.getConfidence() != null)
           recognitionValueTextView.setText(
                   String.format("%.2f", (100 * recognition.getConfidence())) + "%");
-        float confi = 100 * recognition.getConfidence();
+        float confi = recognition.getConfidence();
         try {
-          if (!five && recognitionTextView.getText().toString().equalsIgnoreCase("500") && confi>99 ) {
-            mp2.start();
-            five =true;
-            ten = false;
-            hun = false;
-          } else if (!hun&& recognitionTextView.getText().toString().equalsIgnoreCase("100")&& confi>99) {
+          if ( recognitionTextView.getText().toString().equalsIgnoreCase("0 Tamatar") ) {
             mp.start();
-            hun = true;
-            five =false;
-            ten = false;
-          } else if (!ten&&recognitionTextView.getText().toString().equalsIgnoreCase("10")&& confi>90 ) {
+            tamater=true;
+            mirchi = false;
+            mp1.stop();
+
+          } else if (recognitionTextView.getText().toString().equalsIgnoreCase("1 Mirchi")) {
             mp1.start();
-            ten  =true;
-            five =false;
-            hun = false;
+            mirchi = true;
+            tamater =false;
+            mp.stop();
+
           }
         }catch (Exception e){
           e.printStackTrace();
         }
+
+
       }
 
       Recognition recognition1 = results.get(1);
@@ -594,13 +595,7 @@ boolean hun = false;
               String.format("%.2f", (100 * recognition1.getConfidence())) + "%");
       }
 
-      Recognition recognition2 = results.get(2);
-      if (recognition2 != null) {
-        if (recognition2.getTitle() != null) recognition2TextView.setText(recognition2.getTitle());
-        if (recognition2.getConfidence() != null)
-          recognition2ValueTextView.setText(
-              String.format("%.2f", (100 * recognition2.getConfidence())) + "%");
-      }
+
     }
   }
 

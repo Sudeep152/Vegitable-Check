@@ -40,15 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_alignParentTop="true"
-            android:background="@color/semi_transparent">
-
-           <TextView
-               android:layout_width="match_parent"
-               android:text="Currency Detector App"
-               android:textColor="#fff"
-               android:textSize="20sp"
-               android:layout_height="wrap_content"/>
-        </androidx.appcompat.widget.Toolbar>
+            android:background="@color/semi_transparent"/>
 
     </RelativeLayout>
 

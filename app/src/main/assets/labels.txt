@@ -1,3 +1,2 @@
-500
-100
-10
+0 Tamatar
+1 Mirchi
